@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require ("inquirer");
-var table = require ("cli-table2");
+var Table = require ("cli-table");
 
 var connection = mysql.createConnection({
 	host:"localhost",
@@ -58,7 +58,63 @@ inquirer
       mask: '*'
     }
   ])
-  .then(login);
+  .then(tableGuestAccess);
+}
+
+function tableGuestAccess(){
+
+	connection.query("SELECT * FROM narratives",function(err,res){
+
+	var table = new Table({
+		head: ["ID","Narrative","Location","Price (USD)","Slots"],
+		colWidths: [5,20,20,15,10]
+	});
+	for (var i=0; i<res.length; i++){
+		table.push(
+    		[res[i].id, 
+    		 res[i].narrative_name,
+    		 res[i].park_name,
+    		 res[i].price,
+    		 res[i].available_slots]
+		);
+	}
+	console.log(table.toString());
+	guestActions();
+	});
+	}
+
+function idCheck(input) {
+          if (isNaN(input) === false) {
+            return true;
+          }
+          return 'Please Enter a valid ID number';
+}
+
+function numCheck(input) {
+          if (isNaN(input) === false) {
+            return true;
+          }
+          return 'Please Enter a valid number';
+}
+
+function guestActions(){
+	inquirer.prompt([
+	{
+		type: "input",
+		name: "narrative_id",
+		message: "Thank you for choosing Delos Destinations as your next adventure. \n Please select a desired narrative based on its ID number",
+		validate: idCheck
+	},
+	{
+		type: "input",
+		name: "purchase_slot",
+		message: "Please enter how many slots you would like to purchase",
+		validate: numCheck
+	}
+	]).then(function(answer){
+		console.log("testing");
+		login();
+	})
 }
 
 const adminPassword = value => {
@@ -102,3 +158,4 @@ inquirer
   ])
   .then(login);
 }
+

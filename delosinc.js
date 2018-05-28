@@ -86,8 +86,9 @@ function tableGuestAccess(){
 function idCheck(input) {
           if (isNaN(input) === false) {
             return true;
-          }
+          } else {
           return 'Please Enter a valid ID number';
+      }
 }
 
 function numCheck(input) {
@@ -102,7 +103,7 @@ function guestActions(){
 	{
 		type: "input",
 		name: "narrative_id",
-		message: "Thank you for choosing Delos Destinations as your next adventure. \n Please select a desired narrative based on its ID number",
+		message: "Thank you for choosing Delos Destinations for your next adventure. \n Please select a desired narrative based on its ID number",
 		validate: idCheck
 	},
 	{
@@ -111,10 +112,38 @@ function guestActions(){
 		message: "Please enter how many slots you would like to purchase",
 		validate: numCheck
 	}
-	]).then(function(answer){
-		console.log("testing");
-		login();
+	]).then(function(guestRes){
+		var guestPurchaseSlot = parseInt(guestRes.purchase_slot);
+		var guestPurchaseID = parseInt(guestRes.narrative_id);
+
+		connection.query("SELECT * FROM narratives",function(err,res){
+			var currentSlots = res[guestPurchaseID - 1].available_slots;
+			if(guestPurchaseSlot > currentSlots){
+				console.log("\nSorry, there are not enough avaliable slots to complete your transaction. Please Try again.");
+				tableGuestAccess();
+			} else {
+				    connection.query("UPDATE narratives SET ? WHERE ?", [{
+            available_slots: currentSlots - guestPurchaseSlot
+        },
+        {
+            id: guestPurchaseID
+        }
+    ], function(err) {
+        if (err) throw err;
+        else {
+            console.log("\n Congratulations!\n Your transaction has been processed.\n Please await a confirmation email in 3-5 business days with details of your desired narrative\n");
+            login();
+        }
+    })
+			}
+		})
 	})
+}
+
+
+
+function guestPurchase(answer, ) {
+
 }
 
 const adminPassword = value => {

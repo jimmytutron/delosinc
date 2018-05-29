@@ -122,12 +122,15 @@ function guestActions(){
 				console.log("\nSorry, there are not enough avaliable slots to complete your transaction. Please Try again.");
 				tableGuestAccess();
 			} else {
-				    connection.query("UPDATE narratives SET ? WHERE ?", [{
-            available_slots: currentSlots - guestPurchaseSlot
-        },
-        {
-            id: guestPurchaseID
-        }
+				    connection.query(
+				    	"UPDATE narratives SET ? WHERE ?", 
+				    	[
+				    	{
+            				available_slots: currentSlots - guestPurchaseSlot
+        				},
+        				{
+            				id: guestPurchaseID
+        				}
     ], function(err) {
         if (err) throw err;
         else {
@@ -302,8 +305,43 @@ function createNarrative(){
 }
 
 function addSlots(){
-	console.log("\nthese violent delights have violent ends\n");
-	adminTools();
+	inquirer.prompt([
+	{
+		type: "input",
+		message: "Enter narrative ID",
+		name: "narrative_id",
+		validate: idCheck
+	},
+	{
+		type: "input",
+		message: "Enter additonal slot allotments",
+		name: "slotsAdded",
+		validate: numCheck
+	}
+	]).then(function(updates){
+		var addSlots = parseInt(updates.slotsAdded);
+		var narID = parseInt(updates.narrative_id);
+
+		connection.query(
+			"SELECT * FROM narratives",
+			function(err, res){
+				var currentSlots = res[narID - 1].available_slots;
+				connection.query(
+					"UPDATE narratives SET ? WHERE ?",
+					[{
+						available_slots: currentSlots + addSlots
+					},
+					{
+						id: narID
+					}], function(err){
+						if (err) throw err;
+						else {
+							console.log("Avaiable slots for this narrative has been updated.");
+							adminTools();
+						}
+					})
+			})
+	})
 }
 
 const directorPassword = value => {

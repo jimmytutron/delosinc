@@ -118,6 +118,7 @@ function guestActions(){
 
 		connection.query("SELECT * FROM narratives",function(err,res){
 			var currentSlots = res[guestPurchaseID - 1].available_slots;
+			var activeSlots = res[guestPurchaseID - 1].active_slots;
 			if(guestPurchaseSlot > currentSlots){
 				console.log("\nSorry, there are not enough avaliable slots to complete your transaction. Please Try again.");
 				tableGuestAccess();
@@ -126,7 +127,8 @@ function guestActions(){
 				    	"UPDATE narratives SET ? WHERE ?", 
 				    	[
 				    	{
-            				available_slots: currentSlots - guestPurchaseSlot
+            				available_slots: currentSlots - guestPurchaseSlot,
+            				active_slots: activeSlots + 1
         				},
         				{
             				id: guestPurchaseID

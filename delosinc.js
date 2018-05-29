@@ -262,15 +262,43 @@ function viewByPark(){
 }
 
 function createNarrative(){
-	// console.log("intializing...");
-	// inquirer.prompt([
-	// {
-	// 	type: "input";
-		
-	// }
-	// ])
-	console.log("\nthese violent delights have violent ends\n");
-	adminTools();
+	console.log("\nintializing...\n");
+	inquirer.prompt([
+	{
+		type: "input",
+		message: "Welcome to the narrative creator - Please enter a name for this narrative",
+		name: "newNarrative"
+	},
+	{
+		type: "list",
+		message: "Select a park for this narrative",
+		choices: ["WestWorld","ShogunWorld","The Raj","MedievalWorld","RomanWorld","FutureWorld"],
+		name: "newLocation"
+	},
+	{
+		type: "input",
+		message: "Set price point for slots in this narrative (USD):",
+		name: "newPrice"
+	},
+	{
+		type: "input",
+		message: "Set number of slots for this narrative:",
+		name: "newSlots"
+	}
+	]).then(function(res){
+		connection.query(
+			"INSERT INTO narratives SET ?",
+			{
+				narrative_name: res.newNarrative,
+				park_name: res.newLocation,
+				price: res.newPrice,
+				available_slots: res.newSlots
+			},function(err){
+				if (err) throw (err);
+				console.log("\n New narrative: " + res.newNarrative + " was created successfully.\n This narrative will be avaiable at " + res.newLocation + "\n ETC 72 HOURS\n Generating hosts for storyline...\n");
+				adminTools();
+			});
+});
 }
 
 function addSlots(){

@@ -6,7 +6,7 @@ CREATE table narratives (
 	id INT NOT NULL AUTO_INCREMENT,
 	narrative_name VARCHAR(100),
 	park_name VARCHAR(30),
-	active_slots INT,
+	active_slots INT DEFAULT 0,
 	price FLOAT(99,2),
 	available_slots INT,
 	PRIMARY KEY (id)
@@ -38,5 +38,8 @@ VALUES
 ("Ivory Trade", "The Raj", 3000, 5),
 ("Song of Fire and Ice", "MedievalWorld", 6000, 3),
 ("The Odyssey", "RomanWorld", 1650, 10),
-("BladeRunner", "FutureWorld", 5000, 3),
-("The Maze", "RESTRICTED", NULL, NULL);
+("BladeRunner", "FutureWorld", 5000, 3);
+
+INSERT INTO narratives (narrative_name, park_name, active_slots, price, available_slots)
+VALUES
+("The Maze", "RESTRICTED", 1, 0, 0);

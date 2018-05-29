@@ -81,7 +81,7 @@ function tableGuestAccess(){
 	console.log(table.toString());
 	guestActions();
 	});
-	}
+}
 
 function idCheck(input) {
           if (isNaN(input) === false) {
@@ -164,7 +164,59 @@ inquirer
       validate: adminPassword
     }
   ])
-  .then(login);
+  .then(adminTools);
+}
+
+function adminTools(){
+	inquirer.prompt(
+	{
+		type: "list",
+		message: "AUTHORIZED PERSONNEL || Admin Panel",
+		choices: ["View current park narratives","View narratives by park","Create New narrative", "Add available slots","Exit"],
+		name: "actions"
+	}).then(function(admin){
+		switch (admin.actions){
+			case "View current park narratives":
+			tableAdminAccess();
+			break;
+			case "View narratives by park":
+			viewByPark();
+			break;
+			case "Create New narrative":
+			createNarrative();
+			break;
+			case "Add available slots":
+			break;
+			case "Exit":
+			exit();
+			break;
+			default:
+			exit();
+		}
+	})
+}
+
+function tableAdminAccess(){
+
+	connection.query("SELECT * FROM narratives",function(err,res){
+
+	var table = new Table({
+		head: ["ID","Narrative","Location","Price (USD)","Active Slots","Open Slots"],
+		colWidths: [5,20,20,15,15,15]
+	});
+	for (var i=0; i<res.length; i++){
+		table.push(
+    		[res[i].id, 
+    		 res[i].narrative_name,
+    		 res[i].park_name,
+    		 res[i].price,
+    		 res[i].active_slots,
+    		 res[i].available_slots]
+		);
+	}
+	console.log(table.toString());
+	adminTools();
+	});
 }
 
 const directorPassword = value => {

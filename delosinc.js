@@ -140,12 +140,6 @@ function guestActions(){
 	})
 }
 
-
-
-function guestPurchase(answer, ) {
-
-}
-
 const adminPassword = value => {
   if (value === "violentdelights") {
     return true;
@@ -171,7 +165,7 @@ function adminTools(){
 	inquirer.prompt(
 	{
 		type: "list",
-		message: "AUTHORIZED PERSONNEL || Admin Panel",
+		message: "AUTHORIZED PERSONNEL ONLY || Delos Admin Panel",
 		choices: ["View current park narratives","View narratives by park","Create New narrative", "Add available slots","Exit"],
 		name: "actions"
 	}).then(function(admin){
@@ -186,6 +180,7 @@ function adminTools(){
 			createNarrative();
 			break;
 			case "Add available slots":
+			addSlots();
 			break;
 			case "Exit":
 			exit();
@@ -201,7 +196,7 @@ function tableAdminAccess(){
 	connection.query("SELECT * FROM narratives",function(err,res){
 
 	var table = new Table({
-		head: ["ID","Narrative","Location","Price (USD)","Active Slots","Open Slots"],
+		head: ["ID","Narrative","Location (Park)","Price (USD)","Active Slots","Open Slots"],
 		colWidths: [5,20,20,15,15,15]
 	});
 	for (var i=0; i<res.length; i++){
@@ -214,9 +209,73 @@ function tableAdminAccess(){
     		 res[i].available_slots]
 		);
 	}
-	console.log(table.toString());
+	console.log("\n" + table.toString() + "\n");
 	adminTools();
 	});
+}
+
+const parkCheck = value => {
+			switch (value){
+				case 'WestWorld':
+				case 'ShogunWorld':
+				case 'The Raj':
+				case 'MedievalWorld':
+				case 'RomanWorld':
+				case 'FutureWorld':
+				case 'RESTRICTED':
+				return true;
+			}
+			return 'Please enter a valid park name';
+			};
+
+
+function viewByPark(){
+		inquirer.prompt(
+		{
+			type: "input",
+			message: "Enter park name",
+			name: "park",
+			validate: parkCheck
+		}).then(function(answer){
+			console.log("\n" + answer.park);
+			connection.query (
+				"SELECT * FROM narratives WHERE ?",
+				{park_name : answer.park},
+				function(err, res){
+					var table = new Table({
+					head: ["ID","Narrative","Price (USD)","Active Slots","Open Slots"],
+					colWidths: [5,20,20,15,15]
+					});
+				for (var i=0; i<res.length; i++){
+					table.push(
+			    		[res[i].id, 
+			    		 res[i].narrative_name,
+			    		 res[i].price,
+			    		 res[i].active_slots,
+			    		 res[i].available_slots]
+					);
+				}
+	console.log("\n" + table.toString() + "\n");
+	adminTools();	
+		})
+	})
+}
+
+function createNarrative(){
+	// console.log("intializing...");
+	// inquirer.prompt([
+	// {
+	// 	type: "input";
+		
+	// }
+	// ])
+	console.log("\nthese violent delights have violent ends\n");
+	adminTools();
+}
+
+function addSlots(){
+	console.log("\nthese violent delights have violent ends\n");
+	adminTools();
 }
 
 const directorPassword = value => {

@@ -12,12 +12,31 @@ Make sure you have node.js installed on your computer! You can download it via t
 ```
 https://nodejs.org/en/download/
 ```
+
 Then either clone or download this repo.
 
 ### Installation :file_folder:
 Inside your terminal or command prompt, navigate to the location of the cloned repo. Install the necessary dependencies by running - 
 ```
 npm i
+```
+
+### MySQL :dolphin:
+You will also need an IDE for MySQL to create the `delos_DB` database. I recommend [`mySQL Workbench`](https://www.mysql.com/products/workbench/). Either open the file
+```
+park_data.sql
+```
+inside of your preferred IDE or copy its content and then execute the database.
+
+If you've setup your connection differently, make sure to change the information inside `delosinc.js` to match your connection information
+```javascript
+var connection = mysql.createConnection({
+	host:"localhost",
+	port: 3306,
+	user: "root",
+	password: "password",
+	database: "delos_DB"
+});
 ```
 
 ## Using the App :computer:
@@ -56,6 +75,7 @@ Create new hosts by selecting the last op ̵͈̭̠̃͂̔ͅH̸͇̻͚̜̦͗̀͒́o
 ### NPM Packages
 * [mySQL](https://www.npmjs.com/package/mysql)
 * [inquirer](https://www.npmjs.com/package/inquirer)
+* [CLI Table](https://www.npmjs.com/package/cli-table)
 
 ## Author :key:
 * **Jimmy Tu** - [jimmytutron](https://github.com/jimmytutron)

@@ -22,13 +22,15 @@ npm i
 ```
 
 ### MySQL :dolphin:
-You will also need an IDE for MySQL to create the `delos_DB` database. I recommend [`mySQL Workbench`](https://www.mysql.com/products/workbench/). Either open the file
+You will also need an IDE for MySQL to create the `delos_DB` database. I recommend [`mySQL Workbench`](https://www.mysql.com/products/workbench/). 
+
+Either open the file
 ```
 park_data.sql
 ```
 inside of your preferred IDE or copy its content and then execute the database.
 
-If you've setup your connection differently, make sure to change the information inside `delosinc.js` to match your connection information
+If you've setup your connection differently, make sure to change the information inside `delosinc.js` to match your connection information on lines 6-9.
 ```javascript
 var connection = mysql.createConnection({
 	host:"localhost",

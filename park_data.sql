@@ -43,3 +43,13 @@ VALUES
 INSERT INTO narratives (narrative_name, park_name, active_slots, price, available_slots)
 VALUES
 ("The Maze", "RESTRICTED", 1, 0, 0);
+
+INSERT INTO destinations (park_name,overhead_costs)
+VALUES
+("WestWorld", 1752400),
+("ShogunWorld", 5000000),
+("The Raj", 1500000),
+("MedievalWorld", 4000000),
+("RomanWorld", 875000),
+("FutureWorld", 6720000),
+("RESTRICTED", 999999999);

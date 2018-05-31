@@ -30,7 +30,7 @@ park_data.sql
 ```
 inside of your preferred IDE or copy its content and then execute the database.
 
-If you've setup your connection differently, make sure to change the information inside `delosinc.js` to match your connection information on lines 6-9.
+If you've setup your connection differently or created a new one, make sure to change the information inside `delosinc.js` to match your connection information on lines 6-9.
 ```javascript
 var connection = mysql.createConnection({
 	host:"localhost",

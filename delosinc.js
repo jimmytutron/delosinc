@@ -422,3 +422,27 @@ function viewRevenue(){
 	})
 }
 
+function createPark(){
+	inquirer.prompt([
+	{
+		type: "input",
+		message: "PARK CREATION UNDER BETA\n Requires approval from Board. !IMPORTANT //\n Please name new Park",
+		name: "newPark"
+	},
+	{
+		type: "input",
+		message: "Set desired park budget\n*subject to board approval",
+		name: "newParkCosts"
+	}]).then(function(answer){
+		connection.query("INSERT INTO destinations SET ?",
+		{
+			park_name: answer.newPark,
+			overhead_costs: parseInt(answer.newParkCosts)
+		}, function(err, res){
+			if (err) throw err;
+			console.log("\nSubmitting new Park data...");
+			console.log("Adding new Park: " + answer.newPark + "\n Park subject to approval. Creating ALPHA park build...\n");
+			directorTools();
+		})
+	})
+}

@@ -378,14 +378,14 @@ function directorTools(){
 		name: "actions"
 	}]).then(function(director){
 		switch (director.actions){
-			case "View active slots by park":
+			case "View Park revenue":
 			viewRevenue();
 			break;
 			case "Create new Park":
 			createPark();
 			break;
 			case "Create Hosts":
-			createHost();
+			createHosts();
 			break;
 			case "Exit":
 			exit();

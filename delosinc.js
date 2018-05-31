@@ -84,18 +84,18 @@ function tableGuestAccess(){
 }
 
 function idCheck(input) {
-          if (isNaN(input) === false) {
-            return true;
-          } else {
-          return 'Please Enter a valid ID number';
-      }
+    if (isNaN(input) === false) {
+    return true;
+    } else {
+    return 'Please Enter a valid ID number';
+    }
 }
 
 function numCheck(input) {
-          if (isNaN(input) === false) {
-            return true;
-          }
-          return 'Please Enter a valid number';
+    if (isNaN(input) === false) {
+    return true;
+    }
+    return 'Please Enter a valid number';
 }
 
 function guestActions(){
@@ -136,7 +136,7 @@ function guestActions(){
     ], function(err) {
         if (err) throw err;
         else {
-            console.log("\n Congratulations!\n Your transaction has been processed.\n Please await a confirmation email in 3-5 business days with details of your desired narrative\n");
+            console.log("\n :::::::::::::\n Your transaction has been processed.\n Please await a confirmation email in 3-5 business days with details of your desired narrative\n");
             login();
         }
     })
@@ -338,11 +338,11 @@ function addSlots(){
 					}], function(err){
 						if (err) throw err;
 						else {
-							console.log("Avaiable slots for this narrative has been updated.");
+							console.log("\nAvaiable slots for this narrative has been updated.\n");
 							adminTools();
 						}
-					})
 			})
+		})
 	})
 }
 
@@ -360,10 +360,44 @@ inquirer
       type: 'password',
       message: 'RESTRICTED\n @434projectMAZE#_HOST=restricted\n intialize WYATT => true\n CREDENTIAL: ',
       name: 'directPass',
-      mask: '*',
+      mask: '•',
       validate: directorPassword
     }
   ])
-  .then(login);
+  .then(directorTools);
 }
+
+
+function directorTools(){
+	console.log("h̴͎͝e̵͖̅l̷̦̉l̷͚͐ò̵̠ ̵̥̀d̷̬̎i̶͍̽ṛ̷̕e̷͉͆c̴͉̐t̸̜̉o̶͕͝r̵̺̄\nt̴h̴e̷s̵e̵ ̴v̶i̸o̸l̶e̴n̷t̷ ̶d̵e̵l̴i̵g̴h̷t̵s̵ ̸h̸a̶v̴e̴ ̷v̸i̵o̴l̵e̴n̶t̴ ̸e̵n̵d̸s̸");
+	inquirer.prompt([
+	{
+		type: "list",
+		message: "RESTRICTED ACCESS",
+		choices: ["View active slots by park", "Create new Park", "View high profile hosts", "Create new Host", "Exit"],
+		name: "actions"
+	}]).then(function(director){
+		switch (director.actions){
+			case "View active slots by park":
+			viewActiveSlots();
+			break;
+			case "Create new Park":
+			createPark();
+			break;
+			case "View high profile hosts":
+			viewHosts();
+			break;
+			case "Create new Host":
+			createHost();
+			break;
+			case "Exit":
+			exit();
+			break;
+			default:
+			exit();
+		}
+	})
+}
+
+
 

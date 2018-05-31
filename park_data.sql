@@ -14,9 +14,9 @@ CREATE table narratives (
 
 CREATE table destinations (
 	park_id INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (park_id),
-	park_name VARCHAR(30),
-	overhead_costs FLOAT
+	park_name VARCHAR(30) NOT NULL,
+	overhead_costs DECIMAL(99,2) NOT NULL,
+    PRIMARY KEY (park_id)
 );
 
 CREATE table hosts_data (
@@ -46,10 +46,14 @@ VALUES
 
 INSERT INTO destinations (park_name,overhead_costs)
 VALUES
-("WestWorld", 1752400),
-("ShogunWorld", 5000000),
-("The Raj", 1500000),
-("MedievalWorld", 4000000),
-("RomanWorld", 875000),
-("FutureWorld", 6720000),
-("RESTRICTED", 999999999);
+("WestWorld", 175240),
+("ShogunWorld", 500000),
+("The Raj", 150000),
+("MedievalWorld", 400000),
+("RomanWorld", 375000),
+("FutureWorld", 672000),
+("RESTRICTED", 9999999);
+
+SELECT destinations.park_id AS 'park_id', destinations.park_name AS 'park_name', destinations.overhead_costs AS 'park_costs', COALESCE(sum(narratives.active_slots), 0) AS "slot_sales", (COALESCE(sum(narratives.active_slots), 0) - destinations.overhead_costs) AS 'total_profits' FROM destinations LEFT JOIN narratives ON destinations.park_name = narratives.park_name GROUP BY destinations.park_id ORDER BY destinations.park_name;
+
+

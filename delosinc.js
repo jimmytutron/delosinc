@@ -374,12 +374,12 @@ function directorTools(){
 	{
 		type: "list",
 		message: "RESTRICTED ACCESS",
-		choices: ["View active slots by park", "Create new Park", "View high profile hosts", "Create new Host", "Exit"],
+		choices: ["View Park revenue", "Create new Park", "View high profile hosts", "Create new Host", "Exit"],
 		name: "actions"
 	}]).then(function(director){
 		switch (director.actions){
 			case "View active slots by park":
-			viewActiveSlots();
+			viewRevenue();
 			break;
 			case "Create new Park":
 			createPark();
@@ -399,5 +399,26 @@ function directorTools(){
 	})
 }
 
+function viewRevenue(){
+	var query = "SELECT destinations.park_id AS 'park_id', destinations.park_name AS 'park_name', destinations.overhead_costs AS 'park_costs', COALESCE(sum(narratives.active_slots), 0) AS 'slot_sales', (COALESCE(sum(narratives.active_slots), 0) - destinations.overhead_costs) AS 'total_profits' FROM destinations LEFT JOIN narratives ON destinations.park_name = narratives.park_name GROUP BY destinations.park_id ORDER BY destinations.park_id";
 
+	connection.query(query, function (err, res){
+		if (err) throw err;
+		var table = new Table({
+			head: ["Park ID", "Park", "Overhead", "Slots Sales", "Profits"],
+			colWidths: [10,20,20,10,20]
+		});
+		for (var i=0; i<res.length; i++){
+		table.push(
+			    	[res[i].park_id, 
+			    	 res[i].park_name,
+			         "$" + res[i].park_costs,
+			    	 res[i].slot_sales,
+			    	 "$" + res[i].total_profits]
+					);
+	}
+	console.log(table.toString());
+	directorTools();
+	})
+}
 
